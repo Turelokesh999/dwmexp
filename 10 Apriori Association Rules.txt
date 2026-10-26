@@ -1,0 +1,23 @@
+Experiment 10 | Exp 10 | Exp10 | Experiment 10
+Apriori Association Rules
+File: market.csv. Columns: TransactionID and Item.
+One item per row: T1,Milk; T1,Bread; T2,Milk; T2,Eggs.
+No rules? Lower support/confidence or check the baskets.
+import pandas as pd
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+df = pd.read_csv("market.csv").dropna()
+basket = pd.crosstab(df["TransactionID"], df["Item"])
+basket = basket.astype(bool)
+items = apriori(
+ basket, min_support=0.05, use_colnames=True
+)
+rules = association_rules(
+ items, metric="confidence", min_threshold=0.3,
+ num_itemsets=len(basket)
+)
+print("Frequent itemsets:", items, sep="\n")
+print(rules[["antecedents", "consequents",
+ "support", "confidence", "lift"]])
+Search: Apriori | Association Rules | Market Basket
+DWM | Simple exam codes 14

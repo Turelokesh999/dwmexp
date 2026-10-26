@@ -1,0 +1,52 @@
+Experiment 7 | Exp 7 | Exp7 | Experiment 07 | Part A
+Classification and Clustering
+File: data.csv. Class is the target; other columns numeric.
+Remove IDs. For K-means, need 3+ distinct feature rows.
+Python practice equivalent; Teams specifies WEKA/R.
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
+df = pd.read_csv("data.csv").dropna()
+X = df.drop(columns="Class")
+y = df["Class"]
+# Classification
+a, b, c, d = train_test_split(
+ X, y, test_size=0.2, random_state=42
+)
+model = DecisionTreeClassifier(random_state=42)
+model.fit(a, c)
+print("Accuracy:", accuracy_score(d, model.predict(b)))
+# Clustering
+Z = StandardScaler().fit_transform(X)
+labels = KMeans(
+ n_clusters=3, n_init=10, random_state=42
+).fit_predict(Z)
+print("Cluster sizes:", pd.Series(labels).value_counts())
+Search: WEKA | R | Classification | Clustering | Association
+DWM | Simple exam codes 10
+
+Experiment 7 | Exp 7 | Exp7 | Experiment 07 | Part B
+Association Rules
+File: transactions.csv. Columns: TransactionID and Item.
+One purchased item per row; IDs repeat within each basket.
+Example: T1,Milk and T1,Bread belong to the same basket.
+import pandas as pd
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+df = pd.read_csv("transactions.csv").dropna()
+basket = pd.crosstab(df["TransactionID"], df["Item"])
+basket = basket.astype(bool)
+items = apriori(
+ basket, min_support=0.05, use_colnames=True
+)
+rules = association_rules(
+ items, metric="confidence", min_threshold=0.3,
+ num_itemsets=len(basket)
+)
+print(items)
+print(rules[["antecedents", "consequents", "lift"]])
+Search: WEKA | R | Classification | Clustering | Association
+DWM | Simple exam codes 11

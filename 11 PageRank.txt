@@ -1,0 +1,21 @@
+Experiment 11 | Exp 11 | Exp11 | Experiment 11
+PageRank
+File: links.csv. First column = source; second = target.
+Example: A,B means page A links to page B.
+Needs nonempty link data; higher scores mean higher rank.
+import pandas as pd
+import networkx as nx
+import matplotlib.pyplot as plt
+df = pd.read_csv("links.csv").dropna()
+G = nx.from_pandas_edgelist(
+ df, source=df.columns[0], target=df.columns[1],
+ create_using=nx.DiGraph()
+)
+ranks = nx.pagerank(G, alpha=0.85)
+for page, score in sorted(
+ ranks.items(), key=lambda x: x[1], reverse=True
+):
+ print(page, round(score, 4))
+nx.draw(G, with_labels=True, node_color="lightblue",
+ node_size=1500, arrows=True)
+plt.title("PageRank")

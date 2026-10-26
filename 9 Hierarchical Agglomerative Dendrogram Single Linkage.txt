@@ -1,0 +1,24 @@
+Experiment 9 | Exp 9 | Exp9 | Experiment 09
+Hierarchical Clustering
+File: bio.csv. SampleID is an ID; other features numeric.
+Need 3+ samples. Uses single-linkage agglomeration.
+maxclust requests at most 3 clusters; ties may yield fewer.
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from scipy.cluster.hierarchy import linkage
+from scipy.cluster.hierarchy import dendrogram, fcluster
+df = pd.read_csv("bio.csv").dropna()
+X = df.drop(columns="SampleID").select_dtypes("number")
+Z = StandardScaler().fit_transform(X)
+links = linkage(Z, method="single")
+dendrogram(links)
+plt.title("Hierarchical Clustering")
+plt.xlabel("Sample")
+plt.ylabel("Distance")
+plt.show()
+df["Cluster"] = fcluster(links, t=3, criterion="maxclust")
+print(df["Cluster"].value_counts())
+print(df.groupby("Cluster")[X.columns].mean())
+Search: Hierarchical | Agglomerative | Dendrogram | Single Linkage
+DWM | Simple exam codes 13

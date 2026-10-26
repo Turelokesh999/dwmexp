@@ -1,0 +1,29 @@
+Experiment 3 | Exp 3 | Exp3 | Experiment 03
+Data Preprocessing and EDA
+File: diabetes.csv. Outcome is the target column.
+Other numeric columns are features; exclude numeric IDs.
+Each feature needs at least one non-missing value.
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+df = pd.read_csv("diabetes.csv").drop_duplicates()
+X = df.drop(columns="Outcome").select_dtypes("number")
+print("Missing values:", X.isna().sum(), sep="\n")
+X = X.fillna(X.median()).astype(float)
+for col in X.columns:
+ q1, q3 = X[col].quantile([0.25, 0.75])
+ iqr = q3 - q1
+ X[col] = X[col].clip(
+ q1 - 1.5 * iqr, q3 + 1.5 * iqr
+ )
+print(X.describe())
+X.hist(figsize=(10, 7))
+plt.tight_layout()
+plt.show()
+X = pd.DataFrame(
+ StandardScaler().fit_transform(X),
+ columns=X.columns, index=X.index
+)
+print("Scaled data:", X.head(), sep="\n")
+Search: Preprocessing | Pre-processing | EDA | Diabetes
+DWM | Simple exam codes 6

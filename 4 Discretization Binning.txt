@@ -1,0 +1,25 @@
+Experiment 4 | Exp 4 | Exp4 | Experiment 04
+Customer Discretization
+File: customers.csv. Numeric columns: Age and
+Annual Income (k$). Ages must be positive.
+Age groups and income bins are examples; adjust if needed.
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv("customers.csv").dropna()
+df["Age_Group"] = pd.cut(
+ df["Age"], bins=[0, 25, 40, 60, float("inf")],
+ labels=["Young", "Adult", "Middle", "Senior"]
+)
+df["Income_Group"] = pd.cut(
+ df["Annual Income (k$)"],
+ bins=[-float("inf"), 40, 80, float("inf")],
+ labels=["Low", "Medium", "High"]
+)
+print(df[["Age", "Age_Group", "Income_Group"]].head())
+table = pd.crosstab(df["Age_Group"], df["Income_Group"])
+print(table)
+table.plot(kind="bar")
+plt.tight_layout()
+plt.show()
+Search: Discretization | Binning | Customer Segmentation
+DWM | Simple exam codes 7

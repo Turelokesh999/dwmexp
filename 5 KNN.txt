@@ -1,0 +1,26 @@
+Experiment 5 | Exp 5 | Exp5 | Experiment 05
+Disease Prediction using KNN
+File: diabetes.csv. Outcome is a categorical target.
+All remaining columns must be numeric features; remove IDs.
+Need 5+ training rows; each class needs enough rows to split.
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+df = pd.read_csv("diabetes.csv").dropna()
+X = df.drop(columns="Outcome")
+y = df["Outcome"]
+a, b, c, d = train_test_split(
+ X, y, test_size=0.2, random_state=42, stratify=y
+)
+scaler = StandardScaler()
+a = scaler.fit_transform(a)
+b = scaler.transform(b)
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(a, c)
+pred = model.predict(b)
+print("Accuracy:", accuracy_score(d, pred))
+print("Confusion matrix:", confusion_matrix(d, pred))
+Search: KNN | K-Nearest Neighbors | Disease Prediction
+DWM | Simple exam codes 8

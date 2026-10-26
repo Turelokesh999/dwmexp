@@ -1,0 +1,23 @@
+Experiment 8 | Exp 8 | Exp8 | Experiment 08
+Telecom K-Means Clustering
+File: telecom.csv. Exclude CustomerID from numeric features.
+Need 2+ numeric features for this plot and 3+ distinct rows.
+Distinct rows ignore IDs: (300,10), (500,25), (800,50).
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+df = pd.read_csv("telecom.csv").dropna()
+X = df.drop(columns="CustomerID").select_dtypes("number")
+Z = StandardScaler().fit_transform(X)
+df["Cluster"] = KMeans(
+ n_clusters=3, n_init=10, random_state=42
+).fit_predict(Z)
+print(df.groupby("Cluster")[X.columns].mean())
+plt.scatter(Z[:, 0], Z[:, 1], c=df["Cluster"])
+plt.xlabel(X.columns[0])
+plt.ylabel(X.columns[1])
+plt.title("K-Means Clustering")
+plt.show()
+Search: KMeans | K-Means | K Means | Telecom | Clustering
+DWM | Simple exam codes 12
